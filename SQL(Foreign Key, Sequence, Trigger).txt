@@ -1,0 +1,89 @@
+CREATE TABLE violation(  
+id INT PRIMARY KEY,
+app_id VARCHAR(10),
+application_name VARCHAR(255),
+cfu VARCHAR(255), 
+contact_name VARCHAR(255),
+contact_employee_id VARCHAR(255), 
+request_open_date DATE,
+stage_id VARCHAR(255),
+vulnerability_name VARCHAR(255),
+category VARCHAR(1) REFERENCES threat(category),
+threat_impact_category VARCHAR(255),
+cve_reference VARCHAR(255),
+remediation_date DATE,
+age VARCHAR(255),
+sla_Status VARCHAR(255),
+overall_status VARCHAR(255),
+closed_date DATE );
+
+
+
+CREATE TABLE threat(  
+category VARCHAR(1) PRIMARY KEY,
+threat_level VARCHAR(255)
+);
+
+
+CREATE SEQUENCE violation_sequence;
+
+CREATE OR REPLACE TRIGGER violation_on_insert
+  BEFORE INSERT ON violation
+  FOR EACH ROW
+BEGIN
+  SELECT violation_sequence.nextval
+  INTO :new.id
+  FROM dual;
+END;
+
+
+
+INSERT INTO threat VALUES('A','Critical/High');
+INSERT INTO threat VALUES('B','Medium');
+INSERT INTO threat VALUES('C','Low');
+INSERT INTO threat VALUES('D','Informational');
+
+
+
+INSERT INTO violation(
+app_id , application_name,cfu, contact_name,contact_employee_id,request_open_date,stage_id,vulnerability_name,category,threat_impact_category,cve_reference,remediation_date,age,sla_Status,overall_status,closed_date) VALUES(
+'A',
+'B',
+'C',
+'D',
+'E',
+TO_DATE('1989-12-09','YYYY-MM-DD'),
+'A',
+'B',
+'C',
+'D',
+'E',
+TO_DATE('1989-12-09','YYYY-MM-DD'),
+'C',
+'D',
+'E',
+TO_DATE('1989-12-09','YYYY-MM-DD')
+);
+
+
+
+TRUNCATE TABLE violation;
+
+drop SEQUENCE violation_sequence;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
